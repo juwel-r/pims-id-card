@@ -10,7 +10,7 @@ const Navbar = () => {
       <NavLink to="/add-card">Add New Card</NavLink>
     </>
   );
-  return <div className="py-4 bg-slate-200 flex items-center justify-center">
+  return <div className="py-4 flex items-center justify-center w-full backdrop-blur-sm fixed  top-0 z-50 bg-white/30 text-black">
     <ul className="space-x-4">
         {menuList}
     </ul>

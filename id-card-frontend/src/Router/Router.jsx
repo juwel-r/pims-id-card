@@ -5,7 +5,6 @@ import DynamicSearch from "../Pages/Home/DynamicSearch";
 import Home from "../Layout/Home";
 import Dashboard from "../Pages/Dashboard";
 import AllCard from "../Pages/AllCard";
-import App from "../Astronut/App";
 
 const router = createBrowserRouter([
     {
@@ -28,10 +27,6 @@ const router = createBrowserRouter([
             {
                 path:'/all-card',
                 element:<AllCard></AllCard>
-            },
-            {
-                path:'/app',
-                element:<App></App>
             }
         ]
     }

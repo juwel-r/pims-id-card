@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overflow-y: scroll;
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -17,3 +21,7 @@ input[type="number"] {
   padding: 4px;
   text-align: center;
 } */
+
+.active {
+ color: #4400ff;
+}

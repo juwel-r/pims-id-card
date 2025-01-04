@@ -32,7 +32,7 @@ const DynamicSearch = () => {
     setSaveData((prevUsers) =>
       prevUsers.map((BP) => ({
         ...BP,
-        sarok: inputData.sarok,
+        sarok: "RMP-"+inputData.sarok,
         sarokDate: inputData.sarokDate?.toLocaleDateString("en-GB"),
         status: "আবেদন গৃহিত হয়েছে",
       }))
@@ -50,15 +50,15 @@ const DynamicSearch = () => {
 
     Swal.fire({
       title: "Confirmation",
-      text: `Are Your Sure to Add 0${saveData.length} ID Card Data`,
+      html: `Are our Sure to Add <span style="color: green; font-weight:bold;">0${saveData.length}</span> ID Card?`,
       icon: "info",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Add!"
+      confirmButtonText: "Yes, Add!",
+      width: "400px",
     }).then((result) => {
       if (result.isConfirmed) {
-
         fetch("http://localhost:5000/id-card", {
           method: "POST",
           headers: {
@@ -68,60 +68,60 @@ const DynamicSearch = () => {
         })
           .then((res) => res.json())
           .then((data) => {
-            if(data.insertedCount > 0){
+            if (data.insertedCount > 0) {
               Swal.fire({
                 title: "Successful!",
-                text: `0${saveData.length} ID Card Data Received!`,
-                icon: "success"
+                html: `<span style="color: green; font-weight:bold;">0${saveData.length}</span> ID Card Has Added!`,
+                icon: "success",
+                width: "400px",
               });
+              setSelectedUser([]);
+              setInputData({});
             }
           })
-          .catch((err) => {console.log(err);
+          .catch((err) => {
+            console.log(err);
             Swal.fire({
               title: "Error!",
-              text: "Something Went Wrong",
-              icon: "error"
+              text: `${err}`,
+              icon: "error",
+              width: "400px",
             });
           });
       }
     });
-
-
-    
-
   };
 
   // console.log(saveData);
   return (
-    <div className="border-2 border-red-500 relative">
+    <div className=" w-11/12 mx-auto mt-8 relative">
       {/* Search Form */}
-          <label className=" flex items-center gap-2 w-full max-w-xs    text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm ">
-            <input
-              className="grow focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 rounded-lg py-2  px-4"
-              placeholder="Search BP"
-              onChange={(e) => {
-                setBp(e.target.value);
-                setUserContainer(true);
-              }}
-              name="bp"
-              type="number"
-              required
-            />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="h-4 w-4 opacity-70"
-            >
-              <path
-                fillRule="evenodd"
-                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </label>
+      <label className=" flex items-center gap-2 w-full max-w-xs  border  text-gray-700 bg-white rounded-lg shadow-sm pr-2">
+        <input
+          className="grow focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 rounded-lg py-2  px-4"
+          placeholder="Search BP"
+          onChange={(e) => {
+            setBp(e.target.value);
+            setUserContainer(true);
+          }}
+          name="bp"
+          type="number"
+          required
+        />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          className="h-4 w-4 opacity-70"
+        >
+          <path
+            fillRule="evenodd"
+            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </label>
       <form onSubmit={submitHandler} className="w-full">
-
         {/* Sarok and Date */}
         <section className="grid grid-cols-2 gap-2 w-full mt-4">
           <div className="form-control w-full">
@@ -161,7 +161,7 @@ const DynamicSearch = () => {
           type="submit"
           name=""
           value="Submit"
-          className="btn btn-primary"
+          className="btn btn-outline btn-primary btn-sm text-lg h-10 mt-4"
         />
       </form>
 
@@ -185,14 +185,16 @@ const DynamicSearch = () => {
               <td>{user.Name}</td>
               <td>{user.Rank}</td>
               <td>{user.Mobile}</td>
-              <td>{user.sarok}</td>
-              <td>{user.sarokDate}</td>
-              <td>{user.status}</td>
+              <td>{inputData.sarok}</td>
+              <td>{inputData?.sarokDate?.toLocaleDateString("en-GB")}</td>
+              <td>{inputData.status}</td>
             </tr>
           ))}
         </tbody>
       </table>
-
+      {!selectedUser.length && (
+        <p className="text-center text-gray-400 text-4xl  font-bold my-8">No ID Card Added!</p>
+      )}
       {/* Search Results */}
       {userContainer && members.length > 0 && (
         <div
