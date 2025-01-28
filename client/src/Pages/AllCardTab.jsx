@@ -1,14 +1,15 @@
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import AllCardData from "./AllCardData";
+import ReceivedCard from "./AllCardTab/ReceivedCard";
 
-const AllCard = () => {
+const AllCardTab = () => {
   return (
-    <Tabs defaultIndex={3} onSelect={(index) => console.log(index)}>
+    <Tabs defaultIndex={1} onSelect={(index) => console.log(index)}>
       <div className="flex justify-center">
         <TabList>
           <Tab>All Cards</Tab>
-          <Tab>Application Received</Tab>
+          <Tab>Received Application</Tab>
           <Tab>Sent PHQ</Tab>
           <Tab>Received From PHQ</Tab>
           <Tab>Delivered</Tab>
@@ -19,7 +20,7 @@ const AllCard = () => {
         <AllCardData></AllCardData>
       </TabPanel>
       <TabPanel>
-        <h2>Application</h2>
+        <ReceivedCard/>
       </TabPanel>
       <TabPanel>
         <h2>Sent</h2>
@@ -34,4 +35,4 @@ const AllCard = () => {
   );
 };
 
-export default AllCard;
+export default AllCardTab;
