@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 
-const SendPHQModal = ({ user, refetch }) => {
-  const [sendPHQSarok, setSendPHQSarok] = useState({
-    status: "Sent PHQ",
-    sarokNo: "",
-    sarokDate: new Date(),
+const DeliveredModal = ({ user, refetch }) => {
+  const [idCardDelivered, setIdCardDelivered] = useState({
+    status: "Delivered",
+    comments: "",
+    deliveredData: new Date(),
   });
 
   const [isOpen, setIsOpen] = useState(false);
@@ -18,8 +17,8 @@ const SendPHQModal = ({ user, refetch }) => {
     try {
       await axios
         .patch(
-          `http://localhost:5000/id-card/${user._id}?status=sent-phq`,
-          sendPHQSarok
+          `http://localhost:5000/id-card/${user._id}?status=id-card-delivered`,
+          idCardDelivered
         )
         .then((res) => {
           console.log(res.data);
@@ -40,7 +39,7 @@ const SendPHQModal = ({ user, refetch }) => {
         onClick={() => setIsOpen(true)}
         className="px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition duration-300"
       >
-        Send PHQ
+        Delivered
       </button>
 
       {/* Modal */}
@@ -53,7 +52,7 @@ const SendPHQModal = ({ user, refetch }) => {
           <DialogPanel className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
             {/* Modal Title */}
             <DialogTitle className="text-xl font-semibold text-gray-800 border-b pb-3">
-              Send PHQ Details
+              ID Card Delivered Info
             </DialogTitle>
 
             {/* Form */}
@@ -61,38 +60,19 @@ const SendPHQModal = ({ user, refetch }) => {
               {/* Sarok No Input */}
               <div>
                 <label className="block text-gray-600 font-medium">
-                  Sarok No
+                  Comments
                 </label>
                 <input
                   type="text"
-                  value={sendPHQSarok.sarokNo}
+                  value={idCardDelivered.comments}
                   onChange={(e) =>
-                    setSendPHQSarok((prevData) => ({
+                    setIdCardDelivered((prevData) => ({
                       ...prevData,
-                      sarokNo: e.target.value,
+                      comments: e.target.value,
                     }))
                   }
-                  placeholder="Enter Sarok No"
+                  placeholder="Write Comments"
                   className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                />
-              </div>
-
-              {/* Date Picker */}
-              <div>
-                <label className="block text-gray-600 font-medium">
-                  Sarok Date
-                </label>
-                <DatePicker
-                  selected={sendPHQSarok.sarokDate}
-                  onChange={(date) =>
-                    setSendPHQSarok((prevData) => ({
-                      ...prevData,
-                      sarokDate: date,
-                    }))
-                  }
-                  dateFormat="dd/MM/yyyy"
-                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                  calendarClassName="bg-white border rounded-lg shadow-lg"
                 />
               </div>
 
@@ -120,4 +100,4 @@ const SendPHQModal = ({ user, refetch }) => {
   );
 };
 
-export default SendPHQModal;
+export default DeliveredModal;

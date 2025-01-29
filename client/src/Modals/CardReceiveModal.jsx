@@ -4,25 +4,23 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 
-const SendPHQModal = ({ user, refetch }) => {
-  const [sendPHQSarok, setSendPHQSarok] = useState({
-    status: "Sent PHQ",
+const CardReceiveModal = ({ user, refetch }) => {
+  const [cardReceive, setCardReceive] = useState({
+    status: "ID Card Received",
     sarokNo: "",
     sarokDate: new Date(),
   });
 
   const [isOpen, setIsOpen] = useState(false);
-
   const handleSendPHQ = async (e) => {
     e.preventDefault();
     try {
       await axios
         .patch(
-          `http://localhost:5000/id-card/${user._id}?status=sent-phq`,
-          sendPHQSarok
+          `http://localhost:5000/id-card/${user._id}?status=card-receive`,
+          cardReceive
         )
         .then((res) => {
-          console.log(res.data);
           if (res.data.modifiedCount) {
             refetch();
           }
@@ -40,7 +38,7 @@ const SendPHQModal = ({ user, refetch }) => {
         onClick={() => setIsOpen(true)}
         className="px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition duration-300"
       >
-        Send PHQ
+        Received
       </button>
 
       {/* Modal */}
@@ -53,7 +51,7 @@ const SendPHQModal = ({ user, refetch }) => {
           <DialogPanel className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
             {/* Modal Title */}
             <DialogTitle className="text-xl font-semibold text-gray-800 border-b pb-3">
-              Send PHQ Details
+              Id Card Received Details
             </DialogTitle>
 
             {/* Form */}
@@ -65,9 +63,9 @@ const SendPHQModal = ({ user, refetch }) => {
                 </label>
                 <input
                   type="text"
-                  value={sendPHQSarok.sarokNo}
+                  value={cardReceive.sarokNo}
                   onChange={(e) =>
-                    setSendPHQSarok((prevData) => ({
+                    setCardReceive((prevData) => ({
                       ...prevData,
                       sarokNo: e.target.value,
                     }))
@@ -83,9 +81,9 @@ const SendPHQModal = ({ user, refetch }) => {
                   Sarok Date
                 </label>
                 <DatePicker
-                  selected={sendPHQSarok.sarokDate}
+                  selected={cardReceive.sarokDate}
                   onChange={(date) =>
-                    setSendPHQSarok((prevData) => ({
+                    setCardReceive((prevData) => ({
                       ...prevData,
                       sarokDate: date,
                     }))
@@ -120,4 +118,4 @@ const SendPHQModal = ({ user, refetch }) => {
   );
 };
 
-export default SendPHQModal;
+export default CardReceiveModal;

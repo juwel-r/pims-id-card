@@ -1,7 +1,10 @@
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import AllCardData from "./AllCardData";
-import ReceivedCard from "./AllCardTab/ReceivedCard";
+import ApplicationReceive from "./AllCardTab/ApplicationReceive";
+import SentPHQ from "./AllCardTab/SentPHQ";
+import ReceiveCard from "./AllCardTab/ReceiveCard";
+import DeliveredCards from "./AllCardTab/DeliveredCards";
 
 const AllCardTab = () => {
   return (
@@ -11,7 +14,7 @@ const AllCardTab = () => {
           <Tab>All Cards</Tab>
           <Tab>Received Application</Tab>
           <Tab>Sent PHQ</Tab>
-          <Tab>Received From PHQ</Tab>
+          <Tab>Received ID Card From PHQ</Tab>
           <Tab>Delivered</Tab>
         </TabList>
       </div>
@@ -20,16 +23,16 @@ const AllCardTab = () => {
         <AllCardData></AllCardData>
       </TabPanel>
       <TabPanel>
-        <ReceivedCard/>
+        <ApplicationReceive></ApplicationReceive>
       </TabPanel>
       <TabPanel>
-        <h2>Sent</h2>
+        <SentPHQ></SentPHQ>
       </TabPanel>
       <TabPanel>
-        <h2>Received From PHQ</h2>
+        <ReceiveCard></ReceiveCard>
       </TabPanel>
       <TabPanel>
-        <h2>Delivered</h2>
+        <DeliveredCards></DeliveredCards>
       </TabPanel>
     </Tabs>
   );

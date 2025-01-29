@@ -58,32 +58,103 @@ async function run() {
     //get data
     app.get("/id-card", async (req, res) => {
       const status = req.query.status;
-      let filter;
-      if (status === "Application Received")
-        filter = { "receiveSarok.status": status };
-      if (status === "Sent PHQ") filter = { "sendPHQSarok.status": status };
-      if (status === "Card Received")
-        filter = { "cardReceiveSarok.status": status };
-      const result = await cardCollections.find(filter).toArray();
-      res.send(result);
+
+      // only received application
+      if (status === "received-application") {
+        const result = await cardCollections
+          .aggregate([
+            {
+              $match: {
+                $nor: [
+                  { sendPHQSarok: { $exists: true } },
+                  { receivedCard: { $exists: true } },
+                ],
+              },
+            },
+          ])
+          .toArray();
+        return res.send(result);
+      }
+
+      // only sent to phq application
+      if (status === "sent-phq") {
+        const result = await cardCollections
+          .aggregate([
+            {
+              $match: {
+                sendPHQSarok: { $exists: true },
+                cardReceive: { $exists: false },
+              },
+            },
+          ])
+          .toArray();
+        return res.send(result);
+      }
+
+      // id card received from phq
+      if (status === "receive-id-card") {
+        const result = await cardCollections
+          .aggregate([
+            {
+              $match: {
+                cardReceive: { $exists: true },
+                idCardDelivered:{$exists: false }
+              },
+            },
+          ])
+          .toArray();
+        return res.send(result);
+      }
+
+      // id card Delivered to user
+      if (status === "delivered-cards") {
+        const result = await cardCollections
+          .aggregate([
+            {
+              $match: {
+                idCardDelivered:{$exists: true }
+              },
+            },
+          ])
+          .toArray();
+        return res.send(result);
+      }
     });
 
-    //patch id card
+    //================patch id card====================
     app.patch("/id-card/:id", async (req, res) => {
       const id = req.params.id;
-      console.log(id, req.body);
+      const status = req.query.status;
+      console.log(id, req.body, status);
       const filter = { _id: new ObjectId(id) };
-      const updatedDoc = {
-        $set: {
-          sendPHQSarok: req.body,
-        },
-      };
+      let updatedDoc;
+
+      if (status === "sent-phq") {
+        updatedDoc = {
+          $set: {
+            sendPHQSarok: req.body,
+          },
+        };
+      }
+
+      if (status === "card-receive") {
+        updatedDoc = {
+          $set: {
+            cardReceive: req.body,
+          },
+        };
+      }
+
+      if (status === "id-card-delivered") {
+        updatedDoc = {
+          $set: {
+            idCardDelivered: req.body,
+          },
+        };
+      }
       const result = await cardCollections.updateOne(filter, updatedDoc);
       res.send(result);
     });
-
-
-    
   } finally {
     // await client.close();
   }
