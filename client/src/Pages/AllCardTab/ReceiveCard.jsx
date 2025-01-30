@@ -1,8 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import React from "react";
-import CardReceivedModal from "../../Modals/CardReceiveModal";
-import CardReceiveModal from "../../Modals/CardReceiveModal";
 import DeliveredModal from "../../Modals/DeliveredModal";
 
 const ReceiveCard = () => {
@@ -25,7 +21,7 @@ const ReceiveCard = () => {
       </h1>
 
       {/* Table Wrapper for Responsiveness */}
-      <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
+      <div className="overflow-x-auto bg-white shadow-lg rounded-lg p-4">
         <table className="w-full text-left border border-gray-200">
           {/* Table Head */}
           <thead className="bg-blue-600 text-white">
@@ -45,10 +41,10 @@ const ReceiveCard = () => {
             {cardReceive.map((user, index) => (
               <tr
                 key={index}
-                className="border-b border-gray-200 hover:bg-gray-50 transition duration-200"
+                 className="hover:bg-blue-100 transition duration-200 even:bg-blue-50"
               >
                 <td className="px-4 py-3">{user.BP}</td>
-                <td className="px-4 py-3">{user.Name}</td>
+                <td className="px-4 py-3">{user.Name}</td>    
                 <td className="px-4 py-3 text-center">{user.Rank}</td>
                 <td className="px-4 py-3 text-center">
                   {user.cardReceive?.sarokNo}
@@ -62,7 +58,6 @@ const ReceiveCard = () => {
                   {user.cardReceive?.status}
                 </td>
                 <td className="px-4 py-3 text-center">
-                  {console.log(user)}
                   <DeliveredModal
                     user={user}
                     refetch={refetch}
@@ -72,6 +67,11 @@ const ReceiveCard = () => {
             ))}
           </tbody>
         </table>
+        {!cardReceive.length && (
+        <p className="text-center text-gray-400 text-4xl  font-semibold my-8">
+          There is no data to show!
+        </p>
+      )}
       </div>
     </div>
   );

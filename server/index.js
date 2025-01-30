@@ -55,9 +55,22 @@ async function run() {
       res.send(result);
     });
 
-    //get data
+    //get card data
     app.get("/id-card", async (req, res) => {
       const status = req.query.status;
+
+      if (status === "all-card") {
+        const searchValue = req.query.search;
+        console.log(searchValue)
+        const query = {
+          $or: [
+            { Name: { $regex: searchValue, $options: "i" } },
+            { BP: { $regex: searchValue, $options: "i" } },
+          ],
+        };
+        const result = await cardCollections.find(query).toArray();
+        res.send(result);
+      }
 
       // only received application
       if (status === "received-application") {
@@ -98,7 +111,7 @@ async function run() {
             {
               $match: {
                 cardReceive: { $exists: true },
-                idCardDelivered:{$exists: false }
+                idCardDelivered: { $exists: false },
               },
             },
           ])
@@ -112,7 +125,7 @@ async function run() {
           .aggregate([
             {
               $match: {
-                idCardDelivered:{$exists: true }
+                idCardDelivered: { $exists: true },
               },
             },
           ])

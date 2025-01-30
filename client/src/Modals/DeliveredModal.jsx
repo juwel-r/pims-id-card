@@ -6,7 +6,7 @@ import axios from "axios";
 const DeliveredModal = ({ user, refetch }) => {
   const [idCardDelivered, setIdCardDelivered] = useState({
     status: "Delivered",
-    comments: "",
+    comments: "Delivered Success",
     deliveredData: new Date(),
   });
 

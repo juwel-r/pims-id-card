@@ -25,3 +25,6 @@ input[type="number"] {
 .active {
  color: #4400ff;
 }
+td, th{
+  border: 1px solid gray;
+}

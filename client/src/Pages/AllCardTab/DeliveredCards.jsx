@@ -25,7 +25,7 @@ const DeliveredCards = () => {
       </h1>
 
       {/* Table Wrapper for Responsiveness */}
-      <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
+      <div className="overflow-x-auto bg-white rounded-lg p-4 shadow-lg">
         <table className="w-full text-left border border-gray-200">
           {/* Table Head */}
           <thead className="bg-blue-600 text-white">
@@ -44,7 +44,7 @@ const DeliveredCards = () => {
             {idCardDelivered.map((user, index) => (
               <tr
                 key={index}
-                className="border-b border-gray-200 hover:bg-gray-50 transition duration-200"
+                className="hover:bg-blue-100 transition duration-200 even:bg-blue-50"
               >
                 <td className="px-4 py-3">{user.BP}</td>
                 <td className="px-4 py-3">{user.Name}</td>
@@ -64,6 +64,11 @@ const DeliveredCards = () => {
             ))}
           </tbody>
         </table>
+        {!idCardDelivered.length && (
+        <p className="text-center text-gray-400 text-4xl  font-semibold my-8">
+          There is no data to show!
+        </p>
+      )}
       </div>
     </div>
   );
